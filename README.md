@@ -20,8 +20,8 @@ RAG offers an exciting opportunity to create sophisticated AI systems capable of
 
 - Clone the Repository
 
-git clone <https://github.com/ekram-kedir/Contract-Advisor-RAG.git>
-cd Contract-Advisor-RAG
+  - git clone <https://github.com/ekram-kedir/Contract-Advisor-RAG.git>
+  - cd Contract-Advisor-RAG
 
 # Install Dependencies
 
