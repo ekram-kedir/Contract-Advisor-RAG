@@ -23,29 +23,29 @@ RAG offers an exciting opportunity to create sophisticated AI systems capable of
   - git clone <https://github.com/ekram-kedir/Contract-Advisor-RAG.git>
   - cd Contract-Advisor-RAG
 
-# Install Dependencies
+- Install Dependencies
 
-- pip install -r requirements.txt
+  - pip install -r requirements.txt
 
-# Set Up Environment
+- Set Up Environment
 
-- Create a .env file and add your environment variables.
+  - Create a .env file and add your environment variables.
 
-# Run the Backend
+- Run the Backend
 
-- Navigate to the backend directory and run the backend server.
+  - Navigate to the backend directory and run the backend server.
 
-# Run the Frontend
+- Run the Frontend
 
-- Navigate to the frontend directory and run the frontend server.
+  - Navigate to the frontend directory and run the frontend server.
 
-# Run RAG Scripts
+- Run RAG Scripts
 
-- Navigate to the rag directory and run RAG scripts as needed.
+  - Navigate to the rag directory and run RAG scripts as needed.
 
-# Usage
+- Usage
 
-- Instructions on how to use the Lizzy AI Contract Q&A System, including any important notes or considerations.
+  - You can use this Contract AI to ask about the contract and get an answer from it.
 
 # Contributing
 
