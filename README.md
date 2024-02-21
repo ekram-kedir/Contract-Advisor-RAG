@@ -46,13 +46,24 @@ Our task is to build, evaluate, and enhance a Retrieval Augmented Generation (RA
   - Navigate to the rag directory and run RAG scripts as needed.
 
 - Usage
+  - Once the it is set up and running, you can use the Contract-Advisor-RAG by following these steps:
 
-  - You can use this Contract AI to ask about the contract and get an answer from it.
+   - Ask Questions:
+      - Enter your questions related to contracts in the provided text input field.
+   - Receive Responses:
+      - Submit your questions to the contract assistant and receive relevant responses based on the RAG system's analysis.
+   - View Contract Information:
+      - Explore contract documents and relevant information displayed on the frontend interface.
+   - Interact Seamlessly:
+      - Enjoy a smooth and intuitive user experience while interacting with the contract assistant and accessing contract-related data.
 
-# Contributing
+- Contributing
+   - If you would like to contribute to Contract-Advisor-RAG, please follow these guidelines:
 
-- Instructions for potential contributors on how to contribute to the project.
-
-# License
-
-- This project is licensed under the terms of the MIT license. See the LICENSE file for details.
+        - Fork the repository and create a new branch for your feature or bug fix.
+        - Make your changes and ensure that the code follows the project's coding standards.
+        - Test your changes thoroughly to ensure they work as expected.
+        - Submit a pull request detailing the changes you've made and the problem they solve.
+          
+- License
+   - This project is licensed under the terms of the MIT license. See the LICENSE file for details.
