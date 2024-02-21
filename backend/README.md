@@ -17,7 +17,7 @@ This backend handles response generation based on user query.
 ### Installation
 
 ```bash
-git clone <backend_repository_url>
+git clone <https://github.com/ekram-kedir/Contract-Advisor-RAG.git>
 cd backend
 pip install -r requirements.txt
 python app.py
