@@ -9,10 +9,12 @@ Our task is to build, evaluate, and enhance a Retrieval Augmented Generation (RA
 # Background
 
 - What is RAG?
-Retrieval Augmented Generation (RAG) is a hybrid AI model that combines powerful language models with external data sources. It retrieves relevant information from external data before generating responses, resulting in more accurate and context-rich outputs.
+  - Retrieval Augmented Generation (RAG) is a hybrid AI model that combines powerful language models with external data sources. It retrieves relevant information 
+  from external data before generating responses, resulting in more accurate and context-rich outputs.
 
 - Why RAG?
-RAG offers an exciting opportunity to create sophisticated AI systems capable of interacting with vast amounts of information. Building a robust RAG system presents challenges but also opportunities for innovation and learning in the AI field.
+  - RAG offers an exciting opportunity to create sophisticated AI systems capable of interacting with vast amounts of information. Building a robust RAG system 
+  presents challenges but also opportunities for innovation and learning in the AI field.
 
 # Getting Started
 
