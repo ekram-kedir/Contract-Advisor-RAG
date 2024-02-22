@@ -136,7 +136,7 @@ from exectuors import get_agent_executor
 main_bp = Blueprint('main', __name__)
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-OPENAI_API_KEY="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"
+
 
 # Initialize agent executor
 analyst_agent_openai = get_agent_executor(OPENAI_API_KEY)
