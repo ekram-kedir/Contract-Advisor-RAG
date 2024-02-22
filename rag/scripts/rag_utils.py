@@ -1,5 +1,7 @@
 import json
-
+import logging
+import weaviate
+from typing import List,  Union
 from langchain.document_loaders import TextLoader
 from langchain.text_splitter import CharacterTextSplitter  
 from langchain.chat_models import ChatOpenAI
@@ -8,22 +10,8 @@ from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema.output_parser import StrOutputParser
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Weaviate
-import logging
-from typing import List, Optional, Union
-# from langchain.llms import LLM
-from langchain.prompts import PromptTemplate
-from transformers import pipeline
-
-
-import transformers
-from sentence_transformers import SentenceTransformer
-
-# from weaviate import Client, EmbeddedOptions, Weaviate, OpenAIEmbeddings
-
-
+# from weaviate import EmbeddedOptions
 from datasets import Dataset
-
-import weaviate
 from dotenv import load_dotenv,find_dotenv
 from weaviate.embedded import EmbeddedOptions
 
@@ -32,6 +20,21 @@ from weaviate.embedded import EmbeddedOptions
 load_dotenv(find_dotenv())
 
 logger = logging.getLogger(__name__)
+
+
+def load_file(file_path):
+    try:
+
+        # Open the file in read mode
+        with open(file_path, 'r') as file:
+            # Read the contents of the file
+            file_contents = file.read()   
+        
+        return file_contents
+        
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return None 
 
 def data_loader(file_path: str, chunk_size: int = 500, chunk_overlap: int = 50) -> Union[List[str], None]:
     """
@@ -53,128 +56,62 @@ def data_loader(file_path: str, chunk_size: int = 500, chunk_overlap: int = 50) 
         text_splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
         chunks = text_splitter.split_documents(documents)
         
-        logger.info("Data loaded to vector database successfully")
+        print("Data loaded to vector database successfully")
         return chunks
     except Exception as e:
-        logger.error(f"An unexpected error occurred: {e}")
+        print(f"An unexpected error occurred: {e}")
         return None 
-
-
-# def create_retriever(chunks):
-#     try:
-        
-#         # Load OpenAI API key from .env file
-#         load_dotenv(find_dotenv())
-
-
-#         # Setup vector database
-#         client = weaviate.Client(
-#             embedded_options = EmbeddedOptions()
-#         )
-
-#         # Populate vector database
-#         vectorstore = Weaviate.from_documents(
-#             cembeddingslient = client,    
-#             documents = chunks,
-#             embedding = OpenAIEmbeddings(),
-#             by_text = False
-#         )
-
-#         # Define vectorstore as retriever to enable semantic search
-#         retriever = vectorstore.as_retriever()
-#         print("create retriver  succesfully.")
-
-#         return retriever
     
-#     except Exception as e:
-#         print(f"An unexpected error occurred: {e}")
-#         return None 
     
-def create_retriever(chunks, model):
-   try:
-       # Load OpenAI API key from .env file (if needed for other functionalities)
-       load_dotenv(find_dotenv())
-
-    #    model = SentenceTransformer(model_name)
-
-
-    #    Setup vector database
-       client = weaviate.Client(embedded_options=EmbeddedOptions())
-
-       # Populate vector database using embeddings from the Hugging Face model
-       vectorstore = Weaviate.from_documents(
-           client=client,
-           documents=chunks,
-           embedding=model.encode,  # Use the model's encode function for embeddings
-           by_text=False
-       )
-
-       # Define vectorstore as retriever to enable semantic search
-       retriever = vectorstore.as_retriever()
-       print("Retriever created successfully.")
-
-       return retriever
-
-   except Exception as e:
-       print(f"An unexpected error occurred: {e}")
-       return None
-
-
-
-# def create_langchain_pipeline(retriever, template, temperature=0):
-#     try:
-#         # Define LLM
-#         llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=temperature)
-
-#         # Define prompt template
-        
-#         prompt = ChatPromptTemplate.from_template(template)
-
-#         # Setup RAG pipeline
-#         rag_chain = (
-#             {"context": retriever,  "question": RunnablePassthrough()} 
-#             | prompt 
-#             | llm
-#             | StrOutputParser() 
-#         )
-
-#         print("langchain with rag pipeline created successfully.")
-#         return rag_chain
-
-#     except Exception as e:
-#         print(f"An unexpected error occurred: {e}")
-#         return None 
-    
-
-def create_langchain_pipeline(retriever, template, temperature=0, model_name="meta-llama/Llama-2-7b-chat-hf"):
+def create_retriever(chunks):
     try:
-        # Load the Hugging Face Transformer model
-        model_name = "meta-llama/Llama-2-7b-chat-hf"
-        token = "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"
-        
-        # model = transformers.AutoModelForCausalLM.from_pretrained(model_name, use_fast=True, token=token)
+        # Load OpenAI API key from .env file
+        load_dotenv(find_dotenv())
+        #  Setup vector database
+        client = weaviate.Client(embedded_options=EmbeddedOptions())
 
-        # Create a LangChain LLM instance
-        # llm = LLM(model=model, tokenizer=model.tokenizer, max_length=1024, temperature=temperature)  # Adjust max_length as needed
-        llm = pipeline("text-generation", model=model_name, temperature=temperature)
-
-        # Define prompt template
-        prompt = PromptTemplate.from_template(template)
-
-        # Setup RAG pipeline
-        rag_chain = (
-            {"context": retriever, "question": RunnablePassthrough()}
-            | prompt
-            | llm
-            | StrOutputParser()
+        # Populate vector database using embeddings from the Hugging Face model
+        vectorstore = Weaviate.from_documents(
+            client=client,
+            documents=chunks,
+            embedding=OpenAIEmbeddings(),  # Use the model's encode function for embeddings
+            by_text=False
         )
 
-        print("Langchain with RAG pipeline created successfully.")
-        return rag_chain
+        # Define vectorstore as retriever to enable semantic search
+        retriever = vectorstore.as_retriever()
+        print("Retriever created successfully.")
+
+        return retriever
 
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return None
+
+def create_langchain_pipeline(retriever, template, temperature=0):
+    try:
+        # Define LLM
+        llm = ChatOpenAI(model_name="gpt-4-1106-preview", temperature=temperature)
+
+        # Define prompt template
+        
+        prompt = ChatPromptTemplate.from_template(template)
+
+        # Setup RAG pipeline
+        rag_chain = (
+            {"context": retriever,  "question": RunnablePassthrough()} 
+            | prompt 
+            | llm
+            | StrOutputParser() 
+        )
+
+        print("langchain with rag pipeline created successfully.")
+        return rag_chain
+
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return None 
+    
     
 
 def generate_testcase_and_context(questions, ground_truths, retriever, rag_chain):
@@ -203,24 +140,6 @@ def generate_testcase_and_context(questions, ground_truths, retriever, rag_chain
 
         return  dataset
     
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-        return None 
-
-
-    
-
-
-def load_file(file_path):
-    try:
-
-        # Open the file in read mode
-        with open(file_path, 'r') as file:
-            # Read the contents of the file
-            file_contents = file.read()   
-        
-        return file_contents
-        
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return None 
