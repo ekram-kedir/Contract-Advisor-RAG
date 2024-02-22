@@ -1,116 +1,287 @@
-import React, { useState, useEffect } from "react";
-import { Loader, FormFields, Card } from "../components";
-import { Link } from "react-router-dom";
-import { africa1, telegram } from "../assets/index";
+// import { useState, useEffect } from 'react';
+// import axios from 'axios';
 
-const RenderCards = ({ data, title }) => {
-    if (data?.length > 0) {
-        return data.map((post) => <Card key={post._id} {...post} />);
-    } else {
-        return <h2 className="text-brand font-bold text-xl">{title}</h2>;
+// const YourComponent = () => {
+//   const [data, setData] = useState(null);
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         console.log("called")
+//         const response = await axios.post('http://127.0.0.1:5000/api/v1/chat', { question: 'your-question' });
+//         console.log(response);
+//         const result = response.data.data.map(subList => {
+//           // Check if the sub-list has at least three elements before removing the third one
+//           if (subList.length >= 3) {
+//             // Use slice to create a new array without the third element
+//             return subList.slice(0, 2).concat(subList.slice(3));
+//           }
+//           return subList; // If the sub-list has less than three elements, leave it unchanged
+//         });
+
+//         setData(result); // Assuming the 'data' property contains the DataFrame JSON
+//       } catch (error) {
+//         console.error('Error fetching data:', error);
+//       }
+//     };
+
+//     fetchData();
+
+//   }, []);
+
+
+  
+
+
+//   if (!data) {
+//     return <div>Loading...</div>;
+//   }
+
+//   return (
+//     <div>
+//       <h2>Data Visualization</h2>
+//       <div className="mb-8 xl:mb-16  max-w-[70rem] flex flex-col gap-8 md:gap-24  ">
+//             <table className="min-w-full divide-y divide-gray-200 overflow-x-auto">
+//               <thead className="bg-gray-50">
+//                 <tr>
+//                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+//                   Question
+//                   </th>
+
+//                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+//                   Answer
+//                   </th>
+
+//                   {/* <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+//                   Contexts
+//                   </th> */}
+
+//                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+//                   Ground Truths
+//                   </th>
+
+//                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+//                   Context Precision
+//                   </th>
+
+//                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+//                   Context Recall
+//                   </th>
+                  
+//                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+//                   Faithfulness
+//                   </th>
+//                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+//                   Answer Relevancy
+//                   </th>
+//                 </tr>
+//               </thead>
+//               <tbody className="bg-white divide-y divide-gray-200">
+//                 {data.map((prompt, index) => {
+//                   return ( <tr key={index}>
+//                      {
+//                       prompt.map((value, value_index) => {
+//                         return  <td key={value_index} className="px-6 py-4 ">
+                      
+//                       <div className="text-xs text-left text-gray-900">
+//                         {value}
+//                       </div>
+//                       </td>
+//                       })
+//                      }
+//                     </tr>
+//                   )
+//                 })}
+//               </tbody>
+//             </table>
+//           </div>
+//     </div>
+//   );
+// };
+
+// export default YourComponent;
+
+
+import  { useEffect, useRef, useState } from 'react';
+import '../App.css'
+import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
+// import PdfTextExtract from './PdfTextExtract';
+import axios from 'axios';
+
+// const API_KEY =  import.meta.env.VITE_REACT_APP_CHATGPT_API_KEY;
+
+
+function Home() {
+
+  const fileInputRef = useRef(null);
+  const [text, setText] = useState('');
+  const [prompt, setPrompt] = useState('');
+
+ 
+  useEffect(() => {
+    if(text){
+      setPrompt(`
+      Answer the following question based on the information in the provided text:
+      ${text}
+      `)
     }
-};
+    else{
+      setPrompt("")
+    }
+  }, [text]);
 
-const Home = () => {
-    const [loading, setLoading] = useState(false);
-    const [allPosts, setAllPosts] = useState([]);
-    const [searchText, setSearchText] = useState("");
-    const [filteredPosts, setFilteredPosts] = useState([]);
-    const [searchTimeout, setSearchTimeout] = useState(null);
+  const handleButtonClick = () => {
+    // Trigger the file input when the button is clicked
+    fileInputRef.current.click();
+  };
 
-    useEffect(() => {
-        const fetchPosts = async () => {
-            setLoading(true);
-            try {
-                const response = await fetch(
-                    "https://dalle-hn3a.onrender.com/api/v1/post",
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
 
-                if (response.ok) {
-                    const result = await response.json();
-                    setAllPosts(result.data.reverse());
-                }
-            } catch (err) {
-                console.log(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchPosts();
-    }, []);
 
-    const handleSearchChange = async (e) => {
-        clearTimeout(searchTimeout);
-        setSearchText(e.target.value);
+  const handleFileChange = async (event) => {
+    const selectedFile = event.target.files[0];
 
-        setSearchTimeout(
-            setTimeout(() => {
-                const filteredPosts = allPosts.filter((post) =>
-                    post.prompt.toLowerCase().includes(searchText.toLowerCase())
-                );
-                setFilteredPosts(filteredPosts);
-                setLoading(false);
-            }, 500)
-        );
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/extract-text', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setText(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+
+  };
+
+  const systemMessage = { //  Explain things like you're talking to a software professional with 5 years of experience.
+    "role": "system", "content": prompt
+  }
+  
+
+
+  const [messages, setMessages] = useState([
+  
+  ]);
+  const [isTyping, setIsTyping] = useState(false);
+
+  const handleSend = async (message) => {
+    const newMessage = {
+      message,
+      direction: 'outgoing',
+      sender: "user"
     };
 
-    // set dynamic imgPerPage value according to screen size
-    if (window.innerWidth <= 768) {
-        var dynamicPerPage = 3;
-    } else {
-        dynamicPerPage = 6;
+    const newMessages = [...messages, newMessage];
+    
+    setMessages(newMessages);
+
+    // Initial system message to determine ChatGPT functionality
+    // How it responds, how it talks, etc.
+    setIsTyping(true);
+    await processMessageToChatGPT(newMessages);
+  };
+
+  async function processMessageToChatGPT(chatMessages) { // messages is an array of messages
+    // Format messages for chatGPT API
+    // API is expecting objects in format of { role: "user" or "assistant", "content": "message here"}
+    // So we need to reformat
+
+    let apiMessages = chatMessages.map((messageObject) => {
+      let role = "";
+      if (messageObject.sender === "ChatGPT") {
+        role = "assistant";
+      } else {
+        role = "user";
+      }
+      return { role: role, content: messageObject.message}
+    });
+
+
+  
+    const apiRequestBody = {
+      "model": "gpt-4-1106-preview",
+      "messages": [
+        systemMessage,  // The system message DEFINES the logic of our chatGPT
+        ...apiMessages // The messages from our chat with ChatGPT
+      ]
     }
 
-    // implement pagination
-    const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage] = useState(dynamicPerPage);
-    const indexOfLastPost = currentPage * postsPerPage;
-    const indexOfFirstRepo = indexOfLastPost - postsPerPage;
-    const currentPosts = allPosts.slice(indexOfFirstRepo, indexOfLastPost);
+    console.log("apiRequestBody: ", apiRequestBody.messages)
 
-    const paginate = (pageNumber) => {
-        setCurrentPage(pageNumber);
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    };
+        try {
+          const response = await axios.post('http://127.0.0.1:5000/api/v1/chat', { message:apiRequestBody.messages});
+          console.log(response);
+          setMessages([...chatMessages, {
+                message: response.data.data,
+                sender: "ChatGPT"
+              }]);
+              setIsTyping(false);
+  
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+  
 
-    // calculate page numbers
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(allPosts.length / postsPerPage); i++) {
-        pageNumbers.push(i);
-    }
+    // await fetch('http://127.0.0.1:5000/api/v1/chat', 
+    // {
+    //   method: "POST",
+    //   headers: {
+    //     // "Authorization": "Bearer " + API_KEY,
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: {"question": apiRequestBody.messages}
+    // }).then((data) => {
+    //   return data.json();
+    // }).then((data) => {
+    //   console.log("data: ", data)
+    //   setMessages([...chatMessages, {
+    //     message: data.data.message,
+    //     sender: "ChatGPT"
+    //   }]);
+    //   setIsTyping(false);
+    // });
+  }
 
-    return (
-        <section className="mx-auto">
-            <div className="md:grid md:grid-cols-2 md:grid-flow-row md:gap-4 max-w-7xl mt-16 sm:p-8 px-4 py-8 m-auto bg-white">
-                <div className="hero__text grid-col-1 flex flex-col"> <br />
-                    <h1 className="text-text text-blue-800">አድባር</h1>
-                    <p className="mt-2 text-text max-w-[520px] text-hero text-[15px]">
-                    Welcome to AIQEM, where innovation meets impact in the heart of African technology! 🌍
-                    Unleashing the power of AI and Blockchain, AIQEM proudly presents አድባር – our groundbreaking Telegram Ad solution tailored for Ethiopian businesses.
-                    Elevate your advertising strategy with አድባር, our end-to-end AI-based platform designed to optimize ad placements across diverse Telegram channels.
-                    Explore the future of marketing with AIQEM's Amharic RAG pipeline, revolutionizing the creation of engaging Amharic text Ad content for unparalleled campaign success.
-                    Join us on the forefront of technological innovation as we reshape the landscape of AI and Blockchain solutions for Ethiopian and African businesses. 🚀    
-                    </p>
-                    <br />
-                    <Link
-                        to="/create"
-                        className="font-inter font-bold bg-blue-800 text-white px-2 py-1 rounded-md w-[60px]"
-                    >
-                        Chat
-                    </Link>
-                </div>
-            <div className="mt-16]">
-                <img src={telegram} style={{ width: 500, height: 400 }} alt="img" className=""/>
-            </div>
-            </div>
-        </section>
-    );
-};
+  return (
+    <div className="App" style={{height:"90vh", margin:'auto'}}>
+      <div style={{ position:"relative", height: "100%", width: "700px",margin:'auto', }}>
+      {/* <div style={{marginBottom:'10px'}}>
+     <button onClick={handleButtonClick}>Select PDF File</button>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".pdf"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
+   </div> */}
 
-export default Home;
+        <MainContainer style={{padding:"10px 5px", borderRadius:'10px',
+      display:"flex", alignItems:'center', justifyContent:'center', margin:"auto" }}>
+          <ChatContainer >       
+            <MessageList 
+              scrollBehavior="smooth" 
+              typingIndicator={isTyping ? <TypingIndicator content="ChatGPT is typing" /> : null}
+            >
+              {messages.map((message, i) => {
+                return <Message style={{textAlign:'left'}} key={i} model={message} />
+              })}
+            </MessageList>
+            <MessageInput
+            onSend={handleSend} 
+              style={{ textAlign:"left" }}  
+              placeholder="Type message here" 
+             />    
+            
+    
+          </ChatContainer>
+        </MainContainer>
+      </div>
+    </div>
+  )
+}
+
+export default Home
