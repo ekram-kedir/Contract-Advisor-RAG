@@ -135,14 +135,10 @@ function CustomMessage({ model, ...props }) {
   return (
     <div className="App" style={{ height: '90vh', margin: 'auto' }}>
       <div style={{ position: 'relative', height: '100%', width: '700px', margin: 'auto' }}>
-        <div style={{ marginBottom: '10px' }}>
-          <button onClick={handleButtonClick}>Select PDF File</button>
-          <input ref={fileInputRef} type="file" accept=".pdf" style={{ display: 'none' }} onChange={handleFileChange} />
-        </div>
 
         <MainContainer style={{ padding: '10px 5px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: 'auto' }}>
           <ChatContainer>
-            <MessageList scrollBehavior="smooth" typingIndicator={isTyping ? <TypingIndicator content="ChatGPT is typing"/> : null}>
+            <MessageList scrollBehavior="smooth" typingIndicator={isTyping ? <TypingIndicator content="Contract Advisor is typing"/> : null}>
               {messages.map((message, i) => {
                 const messageAlignment = message.sender === "user" ? "right" : "left";
 
