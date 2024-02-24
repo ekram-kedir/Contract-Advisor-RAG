@@ -1,12 +1,10 @@
 from langchain.chat_models import ChatOpenAI
 from langchain.agents import AgentType, initialize_agent
 from langchain.schema import SystemMessage
-
-from tools import generate_prompts_with_evaluation, get_prompt_ranking_monte_carol_and_elo_rating, generate_evaluation_data
-
+from tools import tool
 from rag_utils import create_retriever, data_loader
 
-with open("system_message.txt", "r") as file:
+with open("../../rag/promptssystem_message.txt", "r") as file:
     system_message = file.read()
 
 chunks = data_loader
@@ -23,7 +21,7 @@ def get_agent_executor(api_key):
     analyst_agent_openai = initialize_agent(
         llm=ChatOpenAI(temperature=0.1, model='gpt-4-1106-preview', api_key=api_key),
         agent=AgentType.OPENAI_FUNCTIONS,
-        tools=[generate_prompts_with_evaluation, get_prompt_ranking_monte_carol_and_elo_rating, generate_evaluation_data],
+        tools=[tool],
         agent_kwargs=agent_kwargs,
         verbose=True,
         max_iterations=20,
