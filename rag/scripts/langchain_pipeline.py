@@ -1,23 +1,11 @@
 from langchain.chat_models import ChatOpenAI
-from langchain.agents import AgentType, initialize_agent
+from langchain.agents import initialize_agent
 from langchain.schema import SystemMessage
 
 from tools import too
-from langchain.embeddings import OpenAIEmbeddings
-
-from rag_utils import create_retriever, data_loader
 
 with open("../prompts/system_message.txt", "r") as file:
     system_message = file.read()
-
-# openai_embeddings = OpenAIEmbeddings()
-
-# chunks = data_loader()
-
-# retriever =  create_retriever(chunks, openai_embeddings)
-
-# openai_4_llm = ChatOpenAI(temperature=0.1, model = 'gpt-4-1106-preview'),
-
 
 def get_agent_executor(retriever):
     agent_kwargs = {

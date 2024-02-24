@@ -23,7 +23,7 @@ class ChunkerManager:
         # Load environment variables from the .env file
         dotenv_path = './../../.env'
         load_dotenv(dotenv_path)
-        self.openai_api_key = os.environ.get("OPENAI_KEY")
+        self.openai_api_key = os.environ.get("OPENAI_API_KEY")
 
     def character_splitting(self, file_path):
         loader = TextLoader(file_path)

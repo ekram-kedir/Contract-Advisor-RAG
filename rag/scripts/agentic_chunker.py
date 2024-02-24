@@ -19,7 +19,7 @@ class AgenticChunker:
         self.print_logging = True
 
         if openai_api_key is None:
-            openai_api_key = os.environ.get("OPENAI_KEY")
+            openai_api_key = os.environ.get("OPENAI_API_KEY")
 
 
         if openai_api_key is None:
