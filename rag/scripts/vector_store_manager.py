@@ -13,7 +13,7 @@ class VectorStoreManager:
         
         # Load OpenAI API key from .env file
         load_dotenv(find_dotenv())
-        self.openai_api_key = os.environ["OPENAI_KEY"]
+        self.openai_api_key = os.environ["OPENAI_API_KEY"]
         
         if self.openai_api_key is None:
             raise ValueError("OpenAI API key not found in environment variables.")
