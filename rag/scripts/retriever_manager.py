@@ -19,7 +19,7 @@ class RetrieverManager:
     def __init__(self):
         # Load OpenAI API key from .env file
         load_dotenv(find_dotenv())
-        self.openai_api_key = os.environ.get("OPENAI_KEY")
+        self.openai_api_key = os.environ.get("OPENAI_API_KEY")
         if not self.openai_api_key:
             raise ValueError("OpenAI API key not found in environment variables.")
         
