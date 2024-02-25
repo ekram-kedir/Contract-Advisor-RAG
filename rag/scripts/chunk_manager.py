@@ -11,6 +11,7 @@ from langchain.embeddings import OpenAIEmbeddings
 from dotenv import load_dotenv
 from langchain.document_loaders import TextLoader
 from langchain_community.chat_models import ChatOpenAI
+from langchain_experimental.text_splitter import SemanticChunker
 from langchain.chains import create_extraction_chain_pydantic
 from langchain_core.pydantic_v1 import BaseModel
 from sklearn.metrics.pairwise import cosine_similarity
@@ -46,16 +47,20 @@ class ChunkerManager:
         return chunks
 
     def semantic_chunking(self, essay):
-        single_sentences_list = re.split(r'(?<=[.?!])\s+', essay)
-        sentences = [{'sentence': x, 'index': i} for i, x in enumerate(single_sentences_list)]
-        sentences = self._combine_sentences(sentences)
-        embeddings = self._embed_sentences(sentences)
-        for i, sentence in enumerate(sentences):
-            sentence['combined_sentence_embedding'] = embeddings[i]
-        distances, sentences = self._calculate_cosine_distances(sentences)
-        indices_above_thresh = self.plot(distances)
-        chunks = self. _create_semantic_chunks(sentences, indices_above_thresh)
+        # single_sentences_list = re.split(r'(?<=[.?!])\s+', essay)
+        # sentences = [{'sentence': x, 'index': i} for i, x in enumerate(single_sentences_list)]
+        # sentences = self._combine_sentences(sentences)
+        # embeddings = self._embed_sentences(sentences)
+        # for i, sentence in enumerate(sentences):
+        #     sentence['combined_sentence_embedding'] = embeddings[i]
+        # distances, sentences = self._calculate_cosine_distances(sentences)
+        # indices_above_thresh = self.plot(distances)
+        # chunks = self. _create_semantic_chunks(sentences, indices_above_thresh)
+        # return chunks
+        text_splitter = SemanticChunker(OpenAIEmbeddings(api_key=self.openai_api_key))
+        chunks = text_splitter.create_documents([essay])
         return chunks
+
     
     def plot(self, distances):
         plt.plot(distances)
