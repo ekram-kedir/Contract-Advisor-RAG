@@ -62,7 +62,32 @@ def data_loader(file_path: str, chunk_size: int = 500, chunk_overlap: int = 50) 
         print(f"An unexpected error occurred: {e}")
         return None 
     
+
+def extract_questions_and_groundtruth(file_path):
+  """
+  Extracts questions and ground truth answers from a document.
+
+  Args:
+    document: A string containing the text document.
+
+  Returns:
+    A list of dictionaries, where each dictionary contains:
+      - question: The extracted question string.
+      - ground_truth_answer: The corresponding ground truth answer string.
+  """
+  with open(file_path, "r") as file:
+    document = file.read()
     
+  eval_questions = []
+  eval_answers = []
+  for line in document.splitlines():
+    if line.startswith("Q"):
+      eval_questions.append(line[3:])
+    elif line.startswith("A"):
+      eval_answers.append([line[3:]])
+
+  return eval_questions,eval_answers
+
 def create_retriever(chunks):
     try:
         # Load OpenAI API key from .env file
