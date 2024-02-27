@@ -10,21 +10,15 @@ from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from dotenv import load_dotenv
 import logging
 import os
-<<<<<<< HEAD
+
+
 # conversational memory
 
 load_dotenv()
 COHERE_API_KEY = os.environ.get("COHERE_API_KEY")
 
-=======
 
-llm = ChatCohere(temperature=0.1, model='text-davinci-003')
-# conversational memory
 
-load_dotenv()
-COHERE_API_KEY = os.environ.get("COHERE_API_KEY")
-
->>>>>>> refactor/rag-enhancement
 # Create cohere's chat model and embeddings objects
 cohere_chat_model = ChatCohere(cohere_api_key=COHERE_API_KEY)
 cohere_embeddings = CohereEmbeddings(cohere_api_key=COHERE_API_KEY)
@@ -32,12 +26,10 @@ raw_documents = TextLoader('./../rag/prompts/context.txt').load()
 text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 documents = text_splitter.split_documents(raw_documents)
 db = Chroma.from_documents(documents, cohere_embeddings)
-<<<<<<< HEAD
+
+
 
 llm = ChatCohere(temperature=0.1, model='text-davinci-003', cohere_api_key=COHERE_API_KEY)
-
-=======
->>>>>>> refactor/rag-enhancement
 # retrieval qa chain
 qa = RetrievalQA.from_chain_type(
     llm=llm,
