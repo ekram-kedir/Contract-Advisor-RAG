@@ -9,7 +9,6 @@ from langchain.schema.output_parser import StrOutputParser
 from langchain_openai import ChatOpenAI
 from datasets import Dataset
 from dotenv import load_dotenv
-from ragas import evaluate
 import matplotlib.pyplot as plt
 from ragas import evaluate
 from ragas.metrics import (
@@ -23,7 +22,7 @@ from ragas.metrics import (
 )
 
 load_dotenv()
-openai_api_key=os.environ["OPENAI_API_KEY"]
+openai_api_key=os.environ["OPENAI_API"]
 
 class RAG:
     def __init__(self):
