@@ -18,17 +18,21 @@ from sklearn.metrics.pairwise import cosine_similarity
 from langchain import hub
 import os
 import numpy as np
+from langchain_community.embeddings.sentence_transformer import (
+    SentenceTransformerEmbeddings,
+)
+
 class ChunkerManager:
     def __init__(self):
         # Load environment variables from the .env file
         dotenv_path = './../../.env'
         load_dotenv(dotenv_path)
-        self.openai_api_key = os.environ.get("OPENAI_API_KEY")
+        self.openai_api_key = os.environ.get("OPENAI")
 
-    def character_splitting(self, file_path):
+    def character_splitting(self, file_path,chunk_size=35, chunk_overlap=0):
         loader = TextLoader(file_path)
         documents = loader.load()
-        text_splitter = CharacterTextSplitter(chunk_size=35, chunk_overlap=0, separator='', strip_whitespace=False)
+        text_splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap, separator='', strip_whitespace=False)
         chunks = text_splitter.split_documents(documents)
         return chunks
 
@@ -57,7 +61,7 @@ class ChunkerManager:
         # indices_above_thresh = self.plot(distances)
         # chunks = self. _create_semantic_chunks(sentences, indices_above_thresh)
         # return chunks
-        text_splitter = SemanticChunker(OpenAIEmbeddings(api_key=self.openai_api_key))
+        text_splitter = SemanticChunker(SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2"))
         chunks = text_splitter.create_documents([essay])
         return chunks
 

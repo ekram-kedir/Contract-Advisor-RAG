@@ -4,7 +4,7 @@ from langchain.schema import SystemMessage
 from tools import tool
 from rag_utils import create_retriever, data_loader
 
-with open("../../rag/promptssystem_message.txt", "r") as file:
+with open("./../backend/system_message.txt", "r") as file:
     system_message = file.read()
 
 chunks = data_loader
