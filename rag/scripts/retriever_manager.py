@@ -84,7 +84,7 @@ class RetrieverManager:
 
     def create_multi_query_retriever(self, vectorstore, query):
         try:
-            llm = ChatOpenAI(temperature=0, openai_api_key=self.openai_api_key)
+            llm = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
             retriever_from_llm = MultiQueryRetriever.from_llm(
                 retriever=vectorstore.as_retriever(), llm=llm
             )
