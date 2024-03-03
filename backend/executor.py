@@ -10,8 +10,6 @@ from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from dotenv import load_dotenv
 import logging
 import os
-
-llm = ChatCohere(temperature=0.1, model='text-davinci-003')
 # conversational memory
 
 load_dotenv()
@@ -24,6 +22,9 @@ raw_documents = TextLoader('./../rag/prompts/context.txt').load()
 text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 documents = text_splitter.split_documents(raw_documents)
 db = Chroma.from_documents(documents, cohere_embeddings)
+
+llm = ChatCohere(temperature=0.1, model='text-davinci-003', cohere_api_key=COHERE_API_KEY)
+
 # retrieval qa chain
 qa = RetrievalQA.from_chain_type(
     llm=llm,
