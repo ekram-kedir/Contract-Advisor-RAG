@@ -4,7 +4,7 @@
 Lizzy AI is an early-stage Israeli startup focused on developing advanced contract AI technology. Our goal is to create the first fully autonomous artificial contract lawyer. Initially, we aim to build a powerful contract assistant capable of drafting, reviewing, and negotiating contracts independently, with the ultimate goal of developing a fully autonomous contract bot.
 
 # Task Objective
-Our task is to build, evaluate, and enhance a Retrieval Augmented Generation (RAG) system for Contract Q&A. This system will enable users to interact with contracts by asking questions and receiving relevant responses. By leveraging large language models and external data retrieval, we aim to enhance the system's accuracy and provide context-rich outputs.
+The task is to build, evaluate, and enhance a Retrieval Augmented Generation (RAG) system for Contract Q&A. This system will enable users to interact with contracts by asking questions and receiving relevant responses. By leveraging large language models and external data retrieval, we aim to enhance the system's accuracy and provide context-rich outputs.
 
 # Background
 
