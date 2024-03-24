@@ -1,10 +1,10 @@
-# PromptlyTech-RAG-LLM-Prompt-Service backend 
+# Contract-Advisor-RAG backend 
 
 Certainly! Below is a template for a README file for a Flask backend for the "PromptlyTech-RAG-LLM-Prompt-Service" project. Please make sure to replace placeholder information with your actual project details.
 
 ---
 
-# PromptlyTech-RAG-LLM-Prompt-Service Backend
+# Contract-Advisor-RAG Backend
 
 This repository contains the Flask backend for the "PromptlyTech-RAG-LLM-Prompt-Service" project. This backend is responsible for handling requests and managing the business logic associated with the prompt service.
 
